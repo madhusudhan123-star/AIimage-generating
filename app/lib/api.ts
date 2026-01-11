@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://a-iimage-generating-cmm2.vercel.app/api';
 
 export const api = {
   async register(email: string, password: string) {
