@@ -17,7 +17,8 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@/components/ui/item";
+} from "../../components/ui/item";
+// @/components/ui/item
 import { Download, LogOut, Sparkles, Clock, ImageIcon, Loader2, Zap, Grid3x3, List, Copy, Check, Sun, Moon, Heart, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
 
 interface Generation {
@@ -38,7 +39,7 @@ export default function DashboardPage() {
   const [prompt, setPrompt] = useState('');
   const [generationsQueue, setGenerationsQueue] = useState<QueueItem[]>([]);
   const [loadingStatus, setLoadingStatus] = useState('');
-  const [generatedImage, setGeneratedImage] = useState<any>(null);
+  const [generatedImage, setGeneratedImage] = useState<Generation | null>(null);
   const [history, setHistory] = useState<Generation[]>([]);
   const [selectedImage, setSelectedImage] = useState<Generation | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -143,8 +144,12 @@ export default function DashboardPage() {
       );
       setLoadingStatus('Enhancing prompt with AI...');
       setLoadingProgress(20);
+      if (!token || !prompt.trim()) return;
 
-      const data = await api.generateImage(prompt, token);
+      const authToken = token; // now inferred as string
+
+      const data = await api.generateImage(prompt, authToken);
+
       setLoadingStatus('🎨 Image generation in progress...');
       setLoadingProgress(50);
 
@@ -243,6 +248,7 @@ export default function DashboardPage() {
       </div>
     );
   }
+  
 
   return (
     <div className={isDarkMode ? "min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" : "min-h-screen bg-gradient-to-br from-white via-slate-50 to-blue-50"}>
@@ -647,7 +653,11 @@ export default function DashboardPage() {
                 </p>
                 <Button 
                   variant="outline"
-                  onClick={() => document.querySelector('input[type="text"]')?.focus()}
+                  // onClick={() => document.querySelector('input[type="text"]')?.focus()}
+                  onClick={() => {
+                    const input = document.querySelector<HTMLInputElement>('input[type="text"]');
+                    input?.focus();
+                  }}
                   className={`gap-2 mt-2 font-semibold transition-all duration-200 ${
                     isDarkMode
                       ? "border-slate-600 text-slate-300 hover:bg-cyan-600/20 hover:text-cyan-300 hover:border-cyan-500"

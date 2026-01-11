@@ -7,7 +7,7 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@/components/item";
+} from "../components/ui/item";
 import {
   HeartIcon,
   MessageCircleIcon,
